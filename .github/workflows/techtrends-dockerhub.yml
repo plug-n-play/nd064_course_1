@@ -6,7 +6,7 @@ on:
       - 'main'
 
 jobs:
-  docker:
+  build:
     runs-on: ubuntu-latest
     steps:
       -
@@ -26,7 +26,7 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v2
         with:
+          context: ./project
+          file: ./project/Dockerfile
           push: true
           tags: user/app:latest
-          file: ./project/Dockerfile
-          context: ./project
