@@ -28,3 +28,5 @@ jobs:
         with:
           push: true
           tags: user/app:latest
+          file: ./project/Dockerfile
+          context: ./project
