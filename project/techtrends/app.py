@@ -1,5 +1,5 @@
 import sqlite3
-import logging
+import logging, sys
 
 from flask import Flask, jsonify, json, render_template, request, url_for, redirect, flash
 from werkzeug.exceptions import abort
@@ -35,7 +35,7 @@ def index():
     connection.close()
     return render_template('index.html', posts=posts)
 
-# Define how each individual article is rendered 
+# Define how each individual article is rendered
 # If the post ID is not found a 404 page is shown
 @app.route('/<int:post_id>')
 def post(post_id):
@@ -74,7 +74,7 @@ def create():
             return redirect(url_for('index'))
 
     return render_template('create.html')
-    
+
 # Define the healthz route of the web application
 @app.route('/healthz')
 def healthz():
@@ -98,9 +98,13 @@ def metrics():
 
 # start the application on port 3111
 if __name__ == "__main__":
+  stdout_handler = logging.StreamHandler(sys.stdout)
+  stderr_handler = logging.StreamHandler(sys.stderr)
+  handlers = [stderr_handler, stdout_handler]
   logging.basicConfig(
     format='%(levelname)s:%(name)s:%(asctime)s, %(message)s',
     datefmt='%m/%d/%Y, %H:%M:%S',
-    level=logging.DEBUG
+    level=logging.DEBUG,
+    handlers=handlers
   )
   app.run(host='0.0.0.0', port='3111')
